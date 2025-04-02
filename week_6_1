@@ -1,4 +1,4 @@
- INSERT INTO customers VALUES
+  INSERT INTO customers VALUES
  (1,'John Smith','john@axample.com', '2020-01-15'),
  (2,'Mary Johnson','mary@axample.com','2020-03-20'),
  (3,'Robert Brown','robert@axample.com', '2020-05-10'),
@@ -40,7 +40,7 @@
   
      SELECT * FROM  order_items;
      
-  INSERT INTO Employees VALUES
+  INSERT INTO employees VALUES
   (1, 'James Wilson', NULL, '2015-01-10', 'Executive', 120000.00),
   (2, 'Jennifer Thomas', 1, '2015-03-15', 'HR', 85000.00),
   (3, 'Devid Martinez', 1, '2016-05-20', 'Finance', 90000.00),
@@ -60,7 +60,44 @@
  
      SELECT * FROM  Employees;
      
+     ---1. მარტივი CTE
+     
+     WITH top_customers AS (
+       SELECT * FROM order_items WHERE quantity > 2)
+       
+       SELECT * from top_customers;
+       
+   -- 2. აგრეგაცია CTE-სთან
+   
+       WITH sum_order_amount AS (
+           SELECT customer_id, SUM(total_amount) as sum_total_amount from orders group by customer_id)
+           
+       SELECT * FROM  sum_order_amount WHERE sum_total_amount >300;
+       
+    ---3. JOIN CTE - სთან
+    
+    WITH old_customers AS (
+       SELECT * FROM customers WHERE join_date < '2021-01-01')
+       
+       SELECT order_items.product_name,order_items.order_id,orders.customer_id
+       FROM orders
+       JOIN  customers ON customers.customer_id=orders.customer_id
+       JOIN  old_customers ON old_customers.customer_id=orders.customer_id
+       JOIN  order_items ON order_items.order_id=orders.order_id;
+       
+       
+       
+           
+       
+       
+  
+       
+       
+       
     
  
+     
+     
        
+     
      
